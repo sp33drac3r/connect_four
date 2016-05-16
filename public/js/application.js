@@ -40,24 +40,63 @@ $(document).ready(function(){
     return return_array
   }
 
- // *****************************************************
-    var diagonals = function(matrix) {
-      for (var k = 0 ; k < matrix.length * 2; k++ ) {
-        for ( var j = 0; j <= k; j++ ) {
-          var i = k - j;
-          if ( i < matrix.length && j < matrix.length ) {
-            console.log(matrix[i][j]);
-          }
-        }
+  var deepCopy = function(array){
+    var newArray = [];
+
+    for (var i = 0; i < array.length; i++) {
+      newArray[i] = array[i].slice();
+    }
+    return newArray
+  }
+
+  var make_square = function(array) {
+    var clone = deepCopy(array)
+    var leng = 0
+    for (var i = 0; i < clone.length; i++) {
+      if ( clone[i].length > leng ) {
+        leng = clone[i].length
       }
     }
+    for (var j = 0; j < clone.length; j++) {
+      for (var k = clone[j].length; k < leng; k++) {
+        clone[j].push(undefined)
+      }
+    }
+    return clone
+  }
 
- // *****************************************************
+  var invert = function(array) {
+    var copy = deepCopy(array)
+    var return_array = []
+    for (var i = 0; i < copy.length; i++){
+      return_array.unshift(copy[i])
+    }
+    return return_array
+  }
+
+  var diagonals = function(array) {
+    return_array = []
+    for (var k = 0 ; k < array.length * 2; k++ ) {
+      var sub_array = []
+      for ( var j = 0; j <= k; j++ ) {
+        var i = k - j;
+        if ( i < array.length && j < array.length ) {
+          sub_array.push(array[i][j]);
+        }
+      }
+      return_array.push(sub_array)
+    }
+    return return_array
+  }
 
   var game_won = function() {
     if ( row_check(board) ) {
       return true
-    } else if ( row_check(transpose(board)) ) {
+    } else if ( row_check(transpose(make_square(board))) ) {
+      return true
+    } else if ( row_check(diagonals(make_square(board))) ){
+      return true
+    } else if ( row_check(diagonals(invert(make_square(board)))) ) {
       return true
     } else {
       return false
@@ -88,16 +127,20 @@ $(document).ready(function(){
     return false
   }
 
+  var winner = function(color){
+    if (game_won()) {
+      alert(color + " has won the game!")
+    }
+  }
+
   var computer_moves = function() {
     var column = Math.floor(Math.random() * 7) + 0
     while (board[column].length > 5) {
       column = Math.floor(Math.random() * 7) + 0
     }
-    // console.log(column)
     update_position = drop("black", column)
     id = position_to_id(column, update_position)
     $("#" + id).css("background-color", "black")
-    // console.log(id)
   }
 
   var drop = function(color, column) {
@@ -109,66 +152,73 @@ $(document).ready(function(){
   }
 
   $(".G").click(function() {
-    // console.log("0")
     var update_position = drop("red", 0)
     $("#G" + update_position).css("background-color", "red")
-    console.log(game_won())
-    computer_moves()
-    console.log(game_won())
+    if (winner("red")){
+    } else {
+      computer_moves()
+      winner("black")
+    }
   });
 
  $(".F").click(function() {
-    // console.log("1")
     var update_position = drop("red", 1)
     $("#F" + update_position).css("background-color", "red")
-    console.log(game_won())
-    computer_moves()
-    console.log(game_won())
+    if (winner("red")){
+    } else {
+      computer_moves()
+      winner("black")
+    }
   });
 
  $(".E").click(function() {
-    // console.log("2")
     var update_position = drop("red", 2)
     $("#E" + update_position).css("background-color", "red")
-    console.log(game_won())
-    computer_moves()
-    console.log(game_won())
+    if (winner("red")){
+    } else {
+      computer_moves()
+      winner("black")
+    }
  });
 
  $(".D").click(function() {
-    // console.log("3")
     var update_position = drop("red", 3)
     $("#D" + update_position).css("background-color", "red")
-    console.log(game_won())
-    computer_moves()
-    console.log(game_won())
+    if (winner("red")){
+    } else {
+      computer_moves()
+      winner("black")
+    }
  });
 
  $(".C").click(function() {
-    // console.log("4")
     var update_position = drop("red", 4)
     $("#C" + update_position).css("background-color", "red")
-    console.log(game_won())
-    computer_moves()
-    console.log(game_won())
+    if (winner("red")){
+    } else {
+      computer_moves()
+      winner("black")
+    }
  });
 
  $(".B").click(function() {
-    // console.log("5")
     var update_position = drop("red", 5)
     $("#B" + update_position).css("background-color", "red")
-    console.log(game_won())
-    computer_moves()
-    console.log(game_won())
+    if (winner("red")){
+    } else {
+      computer_moves()
+      winner("black")
+    }
   });
 
  $(".A").click(function() {
-    // console.log("6")
     var update_position = drop("red", 6)
     $("#A" + update_position).css("background-color", "red")
-    console.log(game_won())
-    computer_moves()
-    console.log(game_won())
+    if (winner("red")){
+    } else {
+      computer_moves()
+      winner("black")
+    }
   });
 
 });
